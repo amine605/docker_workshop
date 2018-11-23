@@ -1,0 +1,92 @@
+- EC2 + Ubuntu 18
+- install docker 
+	 sudo apt update
+	 sudo apt install apt-transport-https ca-certificates curl software-properties-common
+	 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+	 sudo apt update
+	 apt-cache policy docker-ce
+	 sudo apt install docker-ce
+	 sudo systemctl status docker
+	 sudo usermod -aG docker ${USER}	
+	 sudo su - ${USER}
+	 docker
+	 docker run hello-world
+	 
+docker container ls -a 
+docker container ls 
+docker image ls 
+
+docker pull image-name (dockerhub)
+
+docker pull nginx
+--------------------
+	docker run nginx 
+	CTRL  + C to stop
+------------------
+To keep it running we add detatch option 
+	docker run -d --name nginxContainer nginx  
+------------------------
+we check that it's  running : 
+	docker container ls 
+------------------------
+we stop the container 
+	docker container stop ID
+------------------------
+We inspect the Image 
+
+	docker inspect nginx
+
+we will find that we need to expose port 80
+-----------------------
+we inspect the container to get the ip address: 
+
+docker inspect container-ID
+then 
+curl containerIP:80
+----------------------
+how to map the container port to localhost ? 
+	-P : docker run -P -d nginx 
+		 docker container ls (or docker inspect)
+	-p : docer run -p 8080:80 -d nginx
+	curl localhost:8080
+----------------------
+to get a bash from inside the running container we use exec: 
+	docker exec -it containerID /bin/bash
+we discover it's a linux fileSystem 
+	nano usr/share/nginx/html/index.html
+	we change it and save it
+	exit
+	curl localhost:8080
+-----------------------
+Volumes : 
+	docker run -p 8080:80  -d -v $PWD/index.html:usr/share/nginx/html/index.html nginx
+-----------------------
+Custom Images :
+		PART 1 :
+	Docker Files
+		 FROM  node
+		 LABEL Maintainer="ISI"
+		 WORKDIR /app
+		 COPY ./app/* ./
+		 RUN npm install
+		 ENV STAGE  dev		 
+		 EXPOSE 3000
+		 CMD ["node","server.js"]
+		 
+docker run 
+	-P : expose ports 
+	-d :  detatch mode
+	nginx
+
+docker image ls
+docker inspect containerImage
+	
+-----
+Use case : 
+	- Web Application : 
+		- Database 
+		- Logic
+
+
+
