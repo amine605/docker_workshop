@@ -48,7 +48,7 @@ Access the container
 
 ```Dockerfile
 		 FROM  node
-		 LABEL Maintainer="ISI"
+		 LABEL Maintainer="Docker workshop"
 		 WORKDIR /app
 		 COPY ./app/* ./
 		 RUN npm install

@@ -1,5 +1,5 @@
 FROM  node
-LABEL Maintainer="ISI"
+LABEL Maintainer="Docker Workshop"
 WORKDIR /app
 COPY ./app/* ./
 RUN npm install
